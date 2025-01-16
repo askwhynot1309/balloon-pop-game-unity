@@ -15,10 +15,7 @@ public class Balloon2 : MonoBehaviour
 
         if (animator != null)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                animator.SetTrigger("bluePop");
-            }
+            animator.SetTrigger("bluePop");
         }
 
         Destroy(gameObject, 0.3f);

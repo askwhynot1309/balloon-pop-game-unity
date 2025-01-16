@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Balloon : MonoBehaviour
@@ -15,11 +16,9 @@ public class Balloon : MonoBehaviour
 
         if (animator != null)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                animator.SetTrigger("redPop");
-            }
+            animator.Play("redPop");
         }
+        
 
         Destroy(gameObject, 0.3f);
     }

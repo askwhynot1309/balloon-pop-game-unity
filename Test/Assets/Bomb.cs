@@ -16,13 +16,13 @@ public class Bomb : MonoBehaviour
             Instantiate(explosionEffect, transform.position, Quaternion.identity);
         }
 
-        if (animator != null)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                animator.SetTrigger("BOOM");
-            }
-        }
+        //if (animator != null)
+        //{
+        //    if (Input.GetMouseButtonDown(0))
+        //    {
+        //        animator.SetTrigger("BOOM");
+        //    }
+        //}
 
         GameManager.instance.GameOver();
 
