@@ -10,7 +10,7 @@ public class BalloonSpawner : MonoBehaviour
     public Vector2 spawnRangeX = new Vector2(-4f, 4f);
     public Vector2 spawnRangeY = new Vector2(-8f, 8f);
     public float balloonLifetime = 3f;
-    public float bombSpawnChance = 0.3f;
+    public float bombSpawnChance = 0.5f;
 
     public bool stopSpawning = false;
 
