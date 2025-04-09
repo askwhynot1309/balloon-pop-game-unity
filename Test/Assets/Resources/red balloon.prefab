@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8081425909714300622}
   - component: {fileID: 3900667351163625438}
   - component: {fileID: 5477205327606845605}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: red balloon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreValue: 10
+  inputController: {fileID: 0}
 --- !u!95 &5477205327606845605
 Animator:
   serializedVersion: 7
