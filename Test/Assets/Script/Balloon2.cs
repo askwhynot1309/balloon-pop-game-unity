@@ -51,7 +51,7 @@ public class Balloon2 : MonoBehaviour
         {
             animator.Play("bluePop");
         }
-
+        SoundManager.Instance.PlayBalloonPop();
         Destroy(gameObject, 0.3f);
     }
 
