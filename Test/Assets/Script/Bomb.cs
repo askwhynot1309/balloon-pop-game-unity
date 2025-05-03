@@ -5,7 +5,7 @@ public class Bomb : MonoBehaviour
     public GameObject explosionEffect;
     public AstraInputController inputController;
     private Animator animator;
-    private bool isHandOver = false;
+    private bool isFootOver = false;
 
     private void Start()
     {
@@ -32,7 +32,7 @@ public class Bomb : MonoBehaviour
 
     private void HandleClick()
     {
-        if (isHandOver)
+        if (isFootOver)
         {
             TriggerBomb();
         }
@@ -62,17 +62,17 @@ public class Bomb : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Hand"))
+        if (other.CompareTag("Foot"))
         {
-            isHandOver = true;
+            isFootOver = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Hand"))
+        if (other.CompareTag("Foot"))
         {
-            isHandOver = false;
+            isFootOver = false;
         }
     }
 }

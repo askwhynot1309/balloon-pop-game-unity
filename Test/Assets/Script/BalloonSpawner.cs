@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BalloonSpawner : MonoBehaviour
 {
@@ -14,6 +14,10 @@ public class BalloonSpawner : MonoBehaviour
     public float balloonLifetime = 3f;
     public bool stopSpawning = false;
 
+    public AstraInputController inputController;
+
+    private bool hasStartedSpawning = false;
+
     private void Start()
     {
         bomb = Resources.Load<GameObject>("Bomb");
@@ -23,9 +27,34 @@ public class BalloonSpawner : MonoBehaviour
             return;
         }
 
-        InvokeRepeating(nameof(SpawnRedBalloon), 1f, spawnRateRed);
-        InvokeRepeating(nameof(SpawnBlueBalloon), 1f, spawnRateBlue);
-        InvokeRepeating(nameof(SpawnBomb), 1f, spawnRateBomb); 
+        if (inputController != null)
+        {
+            inputController.onDetectBody += OnBodyDetected;
+        }
+        else
+        {
+            Debug.LogError("AstraInputController chưa được gán!");
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (inputController != null)
+        {
+            inputController.onDetectBody -= OnBodyDetected;
+        }
+    }
+
+    private void OnBodyDetected(bool isDetected, Vector3 _)
+    {
+        if (isDetected && !hasStartedSpawning)
+        {
+            hasStartedSpawning = true;
+
+            InvokeRepeating(nameof(SpawnRedBalloon), 1f, spawnRateRed);
+            InvokeRepeating(nameof(SpawnBlueBalloon), 1f, spawnRateBlue);
+            InvokeRepeating(nameof(SpawnBomb), 1f, spawnRateBomb);
+        }
     }
 
     void SpawnRedBalloon()

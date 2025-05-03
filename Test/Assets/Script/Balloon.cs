@@ -6,7 +6,9 @@ public class Balloon : MonoBehaviour
     public int scoreValue = 10;
     private Animator animator;
     public AstraInputController inputController;
-    private bool isHandOver = false;
+    private bool isFootOver = false;
+    private bool hasClicked = false;
+    private bool isPopped = false;
 
     private void Start()
     {
@@ -14,7 +16,7 @@ public class Balloon : MonoBehaviour
 
         if (inputController == null)
         {
-            inputController = FindObjectOfType<AstraInputController>();
+            inputController = FindFirstObjectByType<AstraInputController>();
         }
 
         if (inputController != null)
@@ -33,19 +35,25 @@ public class Balloon : MonoBehaviour
 
     private void HandleClick()
     {
-        if (isHandOver)
+        if (isFootOver && !hasClicked && !isPopped)
         {
+            hasClicked = true;
             PopBalloon();
         }
     }
 
     private void OnMouseDown()
     {
-        PopBalloon();
+        if (!isPopped)
+        {
+            PopBalloon();
+        }
     }
 
     private void PopBalloon()
     {
+        if (isPopped) return;
+        isPopped = true;
         GameManager.instance.AddScore(scoreValue);
 
         if (animator != null)
@@ -58,18 +66,18 @@ public class Balloon : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log($"Trigger enter: {other.name}");
-        if (other.CompareTag("Hand"))
+        if (other.CompareTag("Foot"))
         {
-            isHandOver = true;
+            isFootOver = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Hand"))
+        if (other.CompareTag("Foot"))
         {
-            isHandOver = false;
+            isFootOver = false;
+            hasClicked = false;
         }
     }
 }
