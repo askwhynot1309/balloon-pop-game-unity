@@ -9,10 +9,26 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public GameObject gameOverScreen;
     private bool isGameOver = false;
+    public TextMeshProUGUI highscoreText;
 
-    private int score = 0; 
+    private int score = 0;
 
-    private void Awake()
+    public void Start()
+    {
+        SoundManager.Instance.PlayMusic();
+        StartCoroutine(GameAPI.Instance.GetHighScore(
+        score =>
+        {
+            Debug.Log("Fetched high score: " + score);
+            highscoreText.text = "Highscore: " + score.ToString();
+        },
+        error =>
+        {
+            Debug.LogError("Failed to fetch high score: " + error);
+        }));
+    }
+
+    public void Awake()
     {
         if (instance == null)
             instance = this;
@@ -37,7 +53,13 @@ public class GameManager : MonoBehaviour
         {
             spawner.StopSpawning();
         }
-
+        StartCoroutine(GameAPI.Instance.PostPlayHistory(score,
+                    onSuccess: () => {
+                        Debug.Log("Score posted successfully.");
+                    },
+                    onError: (error) => {
+                        Debug.LogError($"Failed to post score: {error}");
+                    }));
         gameOverScreen.SetActive(true);
     }
 

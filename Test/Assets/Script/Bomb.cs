@@ -54,7 +54,7 @@ public class Bomb : MonoBehaviour
         {
             animator.SetTrigger("BOOM");
         }
-
+        SoundManager.Instance.PlayBombExplosion();
         GameManager.instance.GameOver();
 
         Destroy(gameObject, 0.3f);
