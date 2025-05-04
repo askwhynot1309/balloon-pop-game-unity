@@ -16,36 +16,17 @@ public class AstraController : MonoBehaviour
 
     private Astra.StreamSet _streamSet;
     private Astra.StreamReader _readerDepth;
-    private Astra.StreamReader _readerColor;
-    private Astra.StreamReader _readerNV21Color;
     private Astra.StreamReader _readerBody;
-    private Astra.StreamReader _readerMaskedColor;
-    private Astra.StreamReader _readerColorizedBody;
 
     private DepthStream _depthStream;
-    private ColorStream _colorStream;
-    private ColorStream _nv21ColorStream;
     private BodyStream _bodyStream;
-    private MaskedColorStream _maskedColorStream;
-    private ColorizedBodyStream _colorizedBodyStream;
 
     bool _isDepthOn = false;
-    bool _isColorOn = false;
-    bool _isNV21ColorOn = false;
     bool _isBodyOn = false;
-    bool _isMaskedColorOn = false;
-    bool _isColorizedBodyOn = false;
 
     private long _lastBodyFrameIndex = -1;
     private long _lastDepthFrameIndex = -1;
-    private long _lastColorFrameIndex = -1;
-    private long _lastNV21ColorFrameIndex = -1;
-    private long _lastMaskedColorFrameIndex = -1;
-    private long _lastColorizedBodyFrameIndex = -1;
 
-    private int _lastWidth = 0;
-    private int _lastHeight = 0;
-    private short[] _buffer;
     private int _frameCount = 0;
     private bool _areStreamsInitialized = false;
 
@@ -90,15 +71,6 @@ public class AstraController : MonoBehaviour
     private void OnAstraInitializing(object sender, AstraInitializingEventArgs e)
     {
         Debug.Log("AstraController is initializing");
-        try
-        {
-            GameObject.Find("NV21ColorMapViewer").SetActive(false);
-            GameObject.Find("NV21ColorMapViewerBG").SetActive(false);
-            GameObject.Find("ToggleNV21Color").SetActive(false);
-        }
-        catch (System.Exception)
-        {
-        }
         InitializeStreams();
     }
 
@@ -146,12 +118,6 @@ public class AstraController : MonoBehaviour
             }
 
             _depthStream.SetMode(selectedDepthMode);
-
-            if (_depthStream.usbInfo.Pid == 0x60b ||
-                _depthStream.usbInfo.Pid == 0x617)
-            {
-                _colorStream.IsMirroring = false;
-            }
 
             _bodyStream = _readerBody.GetStream<BodyStream>();
             _areStreamsInitialized = true;
@@ -234,43 +200,6 @@ public class AstraController : MonoBehaviour
     private bool UpdateUntilDelegate()
     {
         return true;
-        bool hasNewFrameDepth = _readerDepth != null && _readerDepth.HasNewFrame();
-        bool hasNewFrameColor = _readerColor != null && _readerColor.HasNewFrame();
-        bool hasNewFrameNV21Color = _readerNV21Color != null && _readerNV21Color.HasNewFrame();
-        bool hasNewFrameBody = _readerBody != null && _readerBody.HasNewFrame();
-        bool hasNewFrameMaskedColor = _readerMaskedColor != null && _readerMaskedColor.HasNewFrame();
-        bool hasNewFrameColorizedBody = _readerColorizedBody != null && _readerColorizedBody.HasNewFrame();
-
-        bool hasNewFrame = true;
-        if (_isColorizedBodyOn)
-        {
-            hasNewFrame = hasNewFrameColorizedBody;
-        }
-        else if (_isMaskedColorOn)
-        {
-            hasNewFrame = hasNewFrameMaskedColor;
-        }
-        else if (_isBodyOn)
-        {
-            hasNewFrame = hasNewFrameBody;
-        }
-        else if (_isDepthOn)
-        {
-            hasNewFrame = hasNewFrameDepth;
-        }
-
-        if (_isColorOn)
-        {
-            hasNewFrame = hasNewFrame && hasNewFrameColor;
-        }
-
-        bool noStreamsStarted = !_isDepthOn &&
-                                !_isColorOn &&
-                                !_isBodyOn &&
-                                !_isMaskedColorOn &&
-                                !_isColorizedBodyOn;
-
-        return hasNewFrame || noStreamsStarted;
     }
 
     private void CheckForNewFrames()

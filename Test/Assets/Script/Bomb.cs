@@ -6,6 +6,8 @@ public class Bomb : MonoBehaviour
     public AstraInputController inputController;
     private Animator animator;
     private bool isFootOver = false;
+    private bool hasClicked = false;
+    private bool isPopped = false;
 
     private void Start()
     {
@@ -13,7 +15,7 @@ public class Bomb : MonoBehaviour
 
         if (inputController == null)
         {
-            inputController = FindObjectOfType<AstraInputController>();
+            inputController = FindFirstObjectByType<AstraInputController>();
         }
 
         if (inputController != null)
@@ -32,8 +34,9 @@ public class Bomb : MonoBehaviour
 
     private void HandleClick()
     {
-        if (isFootOver)
+        if (isFootOver && !hasClicked && !isPopped)
         {
+            hasClicked = true;
             TriggerBomb();
         }
     }
@@ -45,6 +48,8 @@ public class Bomb : MonoBehaviour
 
     private void TriggerBomb()
     {
+        if (isPopped) return;
+        isPopped = true;
         if (explosionEffect != null)
         {
             Instantiate(explosionEffect, transform.position, Quaternion.identity);
@@ -73,6 +78,7 @@ public class Bomb : MonoBehaviour
         if (other.CompareTag("Foot"))
         {
             isFootOver = false;
+            hasClicked = false;
         }
     }
 }

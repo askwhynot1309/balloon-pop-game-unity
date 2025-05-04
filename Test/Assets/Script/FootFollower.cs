@@ -28,7 +28,7 @@ public class FootFollower : MonoBehaviour
         realMinX = -0.70f;
         realMaxX = 0.73f;
         realMinY = 2.89f;
-        realMaxY = 2.29f;
+        realMaxY = 1.96f;
         transform.position = Vector3.zero;
         previousTarget = transform.position;
 

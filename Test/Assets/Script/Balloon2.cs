@@ -6,6 +6,8 @@ public class Balloon2 : MonoBehaviour
     private Animator animator;
     public AstraInputController inputController;
     private bool isFootOver = false;
+    private bool hasClicked = false;
+    private bool isPopped = false;
 
     private void Start()
     {
@@ -32,19 +34,25 @@ public class Balloon2 : MonoBehaviour
 
     private void HandleClick()
     {
-        if (isFootOver)
+        if (isFootOver && !hasClicked && !isPopped)
         {
+            hasClicked = true;
             PopBalloon();
         }
     }
 
     private void OnMouseDown()
     {
-        PopBalloon();
+        if (!isPopped)
+        {
+            PopBalloon();
+        }
     }
 
     private void PopBalloon()
     {
+        if (isPopped) return;
+        isPopped = true;
         GameManager.instance.AddScore(scoreValue);
 
         if (animator != null)
@@ -68,6 +76,7 @@ public class Balloon2 : MonoBehaviour
         if (other.CompareTag("Foot"))
         {
             isFootOver = false;
+            hasClicked = false;
         }
     }
 }

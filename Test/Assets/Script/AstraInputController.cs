@@ -10,12 +10,11 @@ public class AstraInputController : MonoBehaviour
     private Astra.Body[] _bodies = new Astra.Body[Astra.BodyFrame.MaxBodies];
     private Vector3 currentFootPos;
 
-    private float positionThreshold = 0.08f;
-    private float maxJumpThreshold = 0.5f;
+    private float minMoveThreshold = 0.1f;
+    private float maxMoveThreshold = 0.5f;
 
     private Vector3 lastFootPos = Vector3.zero;
 
-    private float smoothingFactor = 0.5f;
     private Vector3 smoothedFootPos = Vector3.zero;
     private bool isFirstSmooth = true;
 
@@ -45,25 +44,27 @@ public class AstraInputController : MonoBehaviour
             if (isFirstSmooth)
             {
                 smoothedFootPos = footWorldPos;
+                lastFootPos = footWorldPos;
                 isFirstSmooth = false;
                 return;
             }
 
-            //Vector3 delta = footWorldPos - lastFootPos;
-            //if (delta.magnitude > maxJumpThreshold)
-            //{
-            //    return;
-            //}
+            Vector3 delta = footWorldPos - lastFootPos;
+            if (delta.magnitude > maxMoveThreshold)
+            {
+                return;
+            }
 
             smoothedFootPos = alpha * footWorldPos + (1f - alpha) * smoothedFootPos;
 
 
-            if (Mathf.Abs(footWorldPos.x - lastFootPos.x) > positionThreshold ||
-                Mathf.Abs(footWorldPos.z - lastFootPos.z) > positionThreshold)
+            if (delta.magnitude > minMoveThreshold)
             {
                 lastFootPos = footWorldPos;
                 currentFootPos = smoothedFootPos;
                 onDetectBody?.Invoke(true, currentFootPos);
+                Debug.Log($"foot pos: {footWorldPos}");
+
 
                 if (Time.time - lastClickTime >= clickCooldown)
                 {
