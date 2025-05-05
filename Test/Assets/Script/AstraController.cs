@@ -124,14 +124,14 @@ public class AstraController : MonoBehaviour
         }
         catch (AstraException e)
         {
-            Debug.Log("AstraController: Couldn't initialize streams: " + e.ToString());
+            //Debug.Log("AstraController: Couldn't initialize streams: " + e.ToString());
             UninitializeStreams();
         }
     }
 
     private void OnAstraTerminating(object sender, AstraTerminatingEventArgs e)
     {
-        Debug.Log("AstraController is tearing down");
+        //Debug.Log("AstraController is tearing down");
         UninitializeStreams();
     }
 
@@ -139,7 +139,7 @@ public class AstraController : MonoBehaviour
     {
         AstraUnityContext.Instance.WaitForUpdate(AstraBackgroundUpdater.WaitIndefinitely);
 
-        Debug.Log("AstraController: Uninitializing streams");
+        //Debug.Log("AstraController: Uninitializing streams");
         if (_readerDepth != null)
         {
             _readerDepth.Dispose();

@@ -11,7 +11,7 @@ public class AstraInputController : MonoBehaviour
     private Vector3 currentFootPos;
 
     private float minMoveThreshold = 0.1f;
-    private float maxMoveThreshold = 0.5f;
+    private float maxMoveThreshold = 0.6f;
 
     private Vector3 lastFootPos = Vector3.zero;
 
@@ -37,7 +37,7 @@ public class AstraInputController : MonoBehaviour
             Vector3 posKnee = GetJointWorldPos(jointKnee);
             Vector3 posHip = GetJointWorldPos(jointHip);
 
-            Vector3 footWorldPos = 0.6f * posFoot + 0.25f * posKnee + 0.15f * posHip;
+            Vector3 footWorldPos = 0.75f * posFoot + 0.20f * posKnee + 0.05f * posHip;
 
             float alpha = 0.5f;
 
@@ -52,6 +52,7 @@ public class AstraInputController : MonoBehaviour
             Vector3 delta = footWorldPos - lastFootPos;
             if (delta.magnitude > maxMoveThreshold)
             {
+                Debug.Log("too far");
                 return;
             }
 
