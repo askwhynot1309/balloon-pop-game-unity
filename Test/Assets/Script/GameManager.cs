@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public AstraInputController inputController;
+    public GameObject restartButton;
+
     public static GameManager instance;
     public TextMeshProUGUI scoreText;
     public GameObject gameOverScreen;
@@ -13,9 +16,12 @@ public class GameManager : MonoBehaviour
 
     private int score = 0;
 
+    private FootDetector restartDetector;
+
     public void Start()
     {
         SoundManager.Instance.PlayMusic();
+        gameOverScreen.SetActive(false);
         StartCoroutine(GameAPI.Instance.GetHighScore(
         score =>
         {
@@ -26,6 +32,31 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Failed to fetch high score: " + error);
         }));
+
+        if (inputController == null)
+        {
+            inputController = FindFirstObjectByType<AstraInputController>();
+        }
+
+        if (inputController != null)
+        {
+            inputController.OnClickEvent.AddListener(HandleFootClick);
+        }
+
+        restartDetector = restartButton.GetComponent<FootDetector>();
+    }
+
+    void HandleFootClick()
+    {
+        if (isGameOver)
+        {
+            if (restartDetector != null && restartDetector.IsFootOver && !restartDetector.hasClicked)
+            {
+                restartDetector.hasClicked = true;
+                RestartGame();
+            }
+            return;
+        }
     }
 
     public void Awake()
@@ -54,10 +85,12 @@ public class GameManager : MonoBehaviour
             spawner.StopSpawning();
         }
         StartCoroutine(GameAPI.Instance.PostPlayHistory(score,
-                    onSuccess: () => {
+                    onSuccess: () =>
+                    {
                         Debug.Log("Score posted successfully.");
                     },
-                    onError: (error) => {
+                    onError: (error) =>
+                    {
                         Debug.LogError($"Failed to post score: {error}");
                     }));
         gameOverScreen.SetActive(true);
