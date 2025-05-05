@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         SoundManager.Instance.PlayMusic();
+        gameOverScreen.SetActive(false);
         StartCoroutine(GameAPI.Instance.GetHighScore(
         score =>
         {
