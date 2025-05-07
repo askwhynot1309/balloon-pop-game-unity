@@ -96,10 +96,6 @@ public class GameManager : MonoBehaviour
         gameOverScreen.SetActive(true);
     }
 
-    //public void RestartGame()
-    //{
-    //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    //}
     public void RestartGame()
     {
         isGameOver = false;
@@ -119,6 +115,7 @@ public class GameManager : MonoBehaviour
             spawner.ClearAllBalloons();
             spawner.StartSpawning();
         }
+
     }
 
 }

@@ -2235,6 +2235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AutoRequestAndroidUsbPermission: 1
+  message: {fileID: 2080240068}
   TimeText: {fileID: 0}
   ToggleDebugText: {fileID: 0}
   NewBodyFrameEvent:
