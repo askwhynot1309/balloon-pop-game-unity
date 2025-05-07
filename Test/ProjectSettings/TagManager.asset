@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Foot
+  - Balloon
+  - Bomb
   layers:
   - Default
   - TransparentFX

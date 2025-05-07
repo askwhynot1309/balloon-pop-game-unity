@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4606508554122077965}
   m_Layer: 0
   m_Name: Bomb
-  m_TagString: Untagged
+  m_TagString: Bomb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -104,6 +104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionEffect: {fileID: 0}
+  inputController: {fileID: 0}
 --- !u!50 &6268929035399016081
 Rigidbody2D:
   serializedVersion: 5

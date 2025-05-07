@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
@@ -96,8 +96,29 @@ public class GameManager : MonoBehaviour
         gameOverScreen.SetActive(true);
     }
 
+    //public void RestartGame()
+    //{
+    //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    //}
     public void RestartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        isGameOver = false;
+        score = 0;
+        scoreText.text = "Score: 0";
+        gameOverScreen.SetActive(false);
+
+        if (restartDetector != null)
+        {
+            restartDetector.hasClicked = false;
+        }
+
+        BalloonSpawner spawner = FindFirstObjectByType<BalloonSpawner>();
+        if (spawner != null)
+        {
+            spawner.StopSpawning();
+            spawner.ClearAllBalloons();
+            spawner.StartSpawning();
+        }
     }
+
 }

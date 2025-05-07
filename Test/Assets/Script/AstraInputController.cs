@@ -20,8 +20,6 @@ public class AstraInputController : MonoBehaviour
 
     private Vector3 smoothedFootPos = Vector3.zero;
     private bool isFirstSmooth = true;
-    private bool isTracking = false;
-    private bool isPlayerPresent = false;
     private Coroutine messageCoroutine = null;
 
     private float lastClickTime = 0f;
@@ -37,11 +35,13 @@ public class AstraInputController : MonoBehaviour
         {
             if (body != null && body.Joints != null)
             {
-                var head = body.Joints[(int)JointType.Head];
-                var baseSpine = body.Joints[(int)JointType.BaseSpine];
+                var rightFoot = body.Joints[(int)JointType.RightFoot];
+                var rightKnee = body.Joints[(int)JointType.RightKnee];
+                var rightHip = body.Joints[(int)JointType.RightHip];
 
-                if (head.Status == JointStatus.Tracked &&
-                    baseSpine.Status == JointStatus.Tracked)
+                if (rightFoot.Status == JointStatus.Tracked &&
+                    rightKnee.Status == JointStatus.Tracked &&
+                    rightHip.Status == JointStatus.Tracked)
                 {
                     trackedCount++;
                 }
@@ -50,6 +50,8 @@ public class AstraInputController : MonoBehaviour
 
         if (trackedCount == 0)
         {
+            //isFirstSmooth = true;
+            Debug.Log("Không tìm thấy người chơi");
             ShowTemporaryMessage("Không tìm thấy người chơi.");
         }
 
@@ -66,13 +68,15 @@ public class AstraInputController : MonoBehaviour
             var jointHip = _bodies[0].Joints[(int)JointType.RightHip];
             var jointKnee = _bodies[0].Joints[(int)JointType.RightKnee];
 
-            if (jointFoot.Status != JointStatus.Tracked)
+            if (jointFoot.Status != JointStatus.Tracked &&
+                jointHip.Status != JointStatus.Tracked &&
+                jointKnee.Status != JointStatus.Tracked)
             {
-                ShowTemporaryMessage("Mất theo dõi chuyển động chân.");
+                ShowTemporaryMessage("Mất theo dõi chuyển động.");
             }
             else
             {
-                ShowTemporaryMessage("Đọc chuyển động chân thành công.");
+                ShowTemporaryMessage("Đọc chuyển động thành công.");
             }
 
             Vector3 posFoot = GetJointWorldPos(jointFoot);
@@ -88,14 +92,13 @@ public class AstraInputController : MonoBehaviour
                 smoothedFootPos = footWorldPos;
                 lastFootPos = footWorldPos;
                 isFirstSmooth = false;
-                ShowTemporaryMessage("Đã tìm thấy người chơi. Trò chơi bắt đầu.");
+                ShowTemporaryMessage("Tìm thấy người chơi. Trò chơi bắt đầu.");
                 return;
             }
 
             Vector3 delta = footWorldPos - lastFootPos;
             if (delta.magnitude > maxMoveThreshold)
             {
-                //ShowTemporaryMessage("Lỗi chuyển động, vui lòng đi lại vị trí cũ.");
                 Debug.Log("too far");
                 return;
             }
@@ -150,5 +153,4 @@ public class AstraInputController : MonoBehaviour
         message.gameObject.SetActive(false);
         messageCoroutine = null;
     }
-
 }

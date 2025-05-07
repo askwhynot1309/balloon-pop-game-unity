@@ -50,32 +50,47 @@ public class BalloonSpawner : MonoBehaviour
         if (isDetected && !hasStartedSpawning)
         {
             hasStartedSpawning = true;
-
-            InvokeRepeating(nameof(SpawnRedBalloon), 1f, spawnRateRed);
-            InvokeRepeating(nameof(SpawnBlueBalloon), 1f, spawnRateBlue);
-            InvokeRepeating(nameof(SpawnBomb), 1f, spawnRateBomb);
+            StartSpawning();
         }
     }
 
-    void SpawnRedBalloon()
+    public void StartSpawning()
+    {
+        CancelInvoke();
+        stopSpawning = false;
+        InvokeRepeating(nameof(SpawnRedBalloon), 1f, spawnRateRed);
+        InvokeRepeating(nameof(SpawnBlueBalloon), 1f, spawnRateBlue);
+        InvokeRepeating(nameof(SpawnBomb), 1f, spawnRateBomb);
+    }
+
+    public void ClearAllBalloons()
+    {
+        GameObject[] balloons = GameObject.FindGameObjectsWithTag("Balloon");
+        foreach (var balloon in balloons)
+        {
+            Destroy(balloon);
+        }
+    }
+
+    public void SpawnRedBalloon()
     {
         if (stopSpawning) return;
         SpawnBalloon(redBalloon);
     }
 
-    void SpawnBlueBalloon()
+    public void SpawnBlueBalloon()
     {
         if (stopSpawning) return;
         SpawnBalloon(blueBalloon);
     }
 
-    void SpawnBomb()
+    public void SpawnBomb()
     {
         if (stopSpawning) return;
         SpawnBalloon(bomb);
     }
 
-    void SpawnBalloon(GameObject prefab)
+    public void SpawnBalloon(GameObject prefab)
     {
         float randomX = Random.Range(spawnRangeX.x, spawnRangeX.y);
         float randomY = Random.Range(spawnRangeY.x, spawnRangeY.y);
