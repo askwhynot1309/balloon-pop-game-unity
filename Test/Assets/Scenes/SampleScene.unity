@@ -2420,7 +2420,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Error MEssage
+  m_text: no camera
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1d8bb949ba6f43e47b41afe89fd067bb, type: 2}
   m_sharedMaterial: {fileID: 5268960589044413149, guid: 1d8bb949ba6f43e47b41afe89fd067bb, type: 2}
