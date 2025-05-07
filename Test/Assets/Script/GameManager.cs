@@ -119,6 +119,16 @@ public class GameManager : MonoBehaviour
             spawner.ClearAllBalloons();
             spawner.StartSpawning();
         }
+        StartCoroutine(GameAPI.Instance.GetHighScore(
+        score =>
+        {
+            Debug.Log("Fetched high score: " + score);
+            highscoreText.text = "Highscore: " + score.ToString();
+        },
+        error =>
+        {
+            Debug.LogError("Failed to fetch high score: " + error);
+        }));
     }
 
 }
