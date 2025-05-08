@@ -57,4 +57,12 @@ public class SoundManager : MonoBehaviour
     {
         sfxSource.PlayOneShot(BombSound);
     }
+
+    public void StopMusic()
+    {
+        if (musicSource.isPlaying)
+        {
+            musicSource.Stop();
+        }
+    }
 }

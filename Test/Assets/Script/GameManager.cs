@@ -93,6 +93,7 @@ public class GameManager : MonoBehaviour
                     {
                         Debug.LogError($"Failed to post score: {error}");
                     }));
+        SoundManager.Instance.StopMusic();
         gameOverScreen.SetActive(true);
     }
 
