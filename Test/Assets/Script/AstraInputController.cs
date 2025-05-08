@@ -83,7 +83,7 @@ public class AstraInputController : MonoBehaviour
             Vector3 posKnee = GetJointWorldPos(jointKnee);
             Vector3 posHip = GetJointWorldPos(jointHip);
 
-            Vector3 footWorldPos = 0.7f * posFoot + 0.2f * posKnee + 0.1f * posHip;
+            Vector3 footWorldPos = posFoot;
 
             float alpha = 0.5f;
 
